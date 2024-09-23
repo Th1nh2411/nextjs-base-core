@@ -1,5 +1,8 @@
+import { SettingFilled } from '@ant-design/icons'
+import { Button, Dropdown, MenuProps, Space } from 'antd'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { signOut } from 'next-auth/react'
 import React, { useState, useEffect } from 'react'
 import { Link as LinkScroll } from 'react-scroll'
@@ -9,12 +12,65 @@ import ButtonOutline from 'components/ui/button/ButtonOutline'
 const Header = () => {
   const [activeLink, setActiveLink] = useState<string>('')
   const [scrollActive, setScrollActive] = useState<boolean>(false)
+  const router = useRouter()
 
   useEffect(() => {
     window.addEventListener('scroll', () => {
       setScrollActive(window.scrollY > 20)
     })
   }, [])
+  const handleChangeLanguage = (value: string) => {
+    router.replace(router.pathname, undefined, {
+      locale: value,
+    })
+  }
+  const items: MenuProps['items'] = [
+    {
+      key: 'lng-setting',
+      label: 'Language',
+      children: [
+        {
+          key: 'en',
+          label: (
+            <Space>
+              <span role='img' aria-label='English'>
+                🇺🇸
+              </span>
+              English
+            </Space>
+          ),
+          onClick: () => handleChangeLanguage('en'),
+        },
+        {
+          key: 'vi',
+          label: (
+            <Space>
+              <span role='img' aria-label='Vietnamese'>
+                🇻🇳
+              </span>
+              Vietnamese
+            </Space>
+          ),
+          onClick: () => handleChangeLanguage('vi'),
+        },
+      ],
+    },
+    {
+      key: 'test',
+      label: 'disabled',
+      disabled: true,
+      children: [
+        {
+          key: '3-1',
+          label: '5d menu item',
+        },
+        {
+          key: '3-2',
+          label: '6th menu item',
+        },
+      ],
+    },
+  ]
 
   return (
     <>
@@ -104,6 +160,11 @@ const Header = () => {
             </LinkScroll>
           </ul>
           <div className='col-start-10 col-end-12 flex items-center justify-end font-medium'>
+            <Dropdown menu={{ items }}>
+              <Button type='text' className='w-9 col-start-9 col-end-auto'>
+                <SettingFilled />
+              </Button>
+            </Dropdown>
             <Link
               href='/auth/login'
               className='mx-2 capitalize tracking-wide text-template-black-600 transition-all hover:text-template-orange-500 sm:mx-4'

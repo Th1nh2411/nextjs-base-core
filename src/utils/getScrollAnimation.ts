@@ -1,7 +1,9 @@
-export const getScrollAnimation = () => {
+import { Variants } from 'framer-motion'
+
+export const getScrollAnimation = (): Variants => {
   return {
     offscreen: {
-      y: 150,
+      y: 120,
       opacity: 0,
     },
     onscreen: ({ duration = 2 } = {}) => ({
